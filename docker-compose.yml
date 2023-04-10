@@ -1,0 +1,27 @@
+version: '1'
+
+services:
+  mysql:
+    image: 'mysql:latest'
+    volumes:
+      - ./pkg/config/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 9901:3306
+    environment:
+      - MYSQL_DATABASE=gorm
+      - MYSQL_USER=wrz
+      - MYSQL_PASSWORD=wrz
+      - MYSQL_RANDOM_ROOT_PASSWORD="yes"
+  Etcd:
+    image: "quay.io/coreos/etcd:v3.5.5"
+    ports:
+      - 2379:2379
+    environment:
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCDCTL_API=3
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
