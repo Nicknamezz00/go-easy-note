@@ -1,0 +1,55 @@
+syntax = "proto3";
+package user;
+option go_package = "user";
+
+message BaseResp {
+  int64 status_code = 1;
+  string message = 2;
+  int64 timestamp = 3;
+}
+
+message User {
+  int64 user_id = 1;
+  string user_name = 2;
+  string avatar = 3;
+}
+
+// Request: Create user
+message CreateUserRequest {
+  string user_name = 1;
+  string password = 2;
+}
+
+// Response: Base response
+message CreateUserResponse {
+  BaseResp base_resp = 1;
+}
+
+// Request: Get multiple users
+message GetUsersRequest {
+  repeated int64 user_ids = 1;
+}
+
+// Response: List of users
+message GetUsersResponse {
+  repeated User users = 1;
+  BaseResp base_resp = 2;
+}
+
+// Request: Check user validation
+message CheckUserRequest {
+  string user_name = 1;
+  string password = 2;
+}
+
+// Response: User id
+message CheckUserResponse {
+  int64 user_id = 1;
+  BaseResp base_resp = 2;
+}
+
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (CheckUserResponse) {}
+  rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {}
+  rpc CheckUser (CheckUserRequest) returns (CheckUserResponse) {}
+}
