@@ -50,13 +50,13 @@ func CreateUser(ctx context.Context, req *user.CreateUserRequest) error {
 	return nil
 }
 
-func CheckUser(ctx context.Context, req *user.CheckUserRequest) error {
+func CheckUser(ctx context.Context, req *user.CheckUserRequest) (int64, error) {
 	resp, err := UserClient.CheckUser(ctx, req)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.Message)
+		return 0, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.Message)
 	}
-	return nil
+	return resp.UserId, nil
 }

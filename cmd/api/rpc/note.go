@@ -61,15 +61,15 @@ func UpdateNote(ctx context.Context, req *note.UpdateNoteRequest) error {
 	return nil
 }
 
-func QueryNote(ctx context.Context, req *note.QueryNoteRequest) error {
+func QueryNote(ctx context.Context, req *note.QueryNoteRequest) ([]*note.Note, int64, error) {
 	resp, err := NoteClient.QueryNote(ctx, req)
 	if err != nil {
-		return err
+		return nil, 0, err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.Message)
+		return nil, 0, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.Message)
 	}
-	return nil
+	return resp.Notes, resp.Total, nil
 }
 
 func DeleteNote(ctx context.Context, req *note.DeleteNoteRequset) error {

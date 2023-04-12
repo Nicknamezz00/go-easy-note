@@ -1,4 +1,6 @@
-CREATE TABLE `user`
+CREATE DATABASE IF NOT EXISTS go_easy_note DEFAULT CHARSET utf8mb4 COLLATE utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `user`
 (
     `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'pk',
     `user_name` varchar(128) NOT NULL DEFAULT '' COMMENT 'UserName',
@@ -10,7 +12,7 @@ CREATE TABLE `user`
     KEY `idx_user_name` (`user_name`) COMMENT 'UserName idx'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT 'User table';
 
-CREATE TABLE `note`
+CREATE TABLE IF NOT EXISTS `note`
 (
     `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'pk',
     `user_id` int(64) NOT NULL DEFAULT 0 COMMENT 'UserID',
