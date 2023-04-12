@@ -6,7 +6,7 @@ import (
 	"github.com/hertz-contrib/jwt"
 	"go-easy-note/cmd/api/rpc"
 	"go-easy-note/kitex_gen/note"
-	"go-easy-note/pkg/constant"
+	"go-easy-note/pkg/constants"
 	"go-easy-note/pkg/errno"
 	"strconv"
 )
@@ -25,7 +25,7 @@ func CreateNote(ctx context.Context, c *app.RequestContext) {
 	}
 
 	claims := jwt.ExtractClaims(ctx, c)
-	userID := int64(claims[constant.IdentityKey].(float64))
+	userID := int64(claims[constants.IdentityKey].(float64))
 	err := rpc.CreateNote(context.Background(), &note.CreateNoteRequest{
 		Title:   noteVal.Title,
 		Content: noteVal.Content,
@@ -41,8 +41,8 @@ func CreateNote(ctx context.Context, c *app.RequestContext) {
 // DeleteNote delete note
 func DeleteNote(ctx context.Context, c *app.RequestContext) {
 	claims := jwt.ExtractClaims(ctx, c)
-	userID := int64(claims[constant.IdentityKey].(float64))
-	noteIDStr := c.Param(constant.NoteID)
+	userID := int64(claims[constants.IdentityKey].(float64))
+	noteIDStr := c.Param(constants.NoteID)
 	noteIDInt, err := strconv.ParseInt(noteIDStr, 10, 64)
 	if err != nil {
 		SendResponse(c, errno.ConvertErr(err), nil)
@@ -74,8 +74,8 @@ func UpdateNote(ctx context.Context, c *app.RequestContext) {
 	}
 
 	claims := jwt.ExtractClaims(ctx, c)
-	userID := int64(claims[constant.IdentityKey].(float64))
-	noteIDStr := c.Param(constant.NoteID)
+	userID := int64(claims[constants.IdentityKey].(float64))
+	noteIDStr := c.Param(constants.NoteID)
 	noteIDInt, err := strconv.ParseInt(noteIDStr, 10, 64)
 	if err != nil {
 		SendResponse(c, errno.ConvertErr(err), nil)
@@ -104,7 +104,7 @@ func UpdateNote(ctx context.Context, c *app.RequestContext) {
 // QueryNote query list of notes
 func QueryNote(ctx context.Context, c *app.RequestContext) {
 	claims := jwt.ExtractClaims(ctx, c)
-	userID := int64(claims[constant.IdentityKey].(float64))
+	userID := int64(claims[constants.IdentityKey].(float64))
 
 	var queryVal struct {
 		Limit     int64  `json:"limit" form:"limit" query:"limit"`
@@ -130,7 +130,7 @@ func QueryNote(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	SendResponse(c, errno.Success, map[string]interface{}{
-		constant.Total: total,
-		constant.Notes: notes,
+		constants.Total: total,
+		constants.Notes: notes,
 	})
 }

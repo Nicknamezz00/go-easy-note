@@ -9,7 +9,7 @@ import (
 	"go-easy-note/cmd/api/handlers"
 	"go-easy-note/cmd/api/rpc"
 	"go-easy-note/kitex_gen/user"
-	"go-easy-note/pkg/constant"
+	"go-easy-note/pkg/constants"
 	"go-easy-note/pkg/errno"
 	"go-easy-note/pkg/tracer"
 	"time"

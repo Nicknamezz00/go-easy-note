@@ -8,7 +8,7 @@ import (
 	trace "github.com/kitex-contrib/tracer-opentracing"
 	"go-easy-note/kitex_gen/user"
 	"go-easy-note/kitex_gen/user/userservice"
-	"go-easy-note/pkg/constant"
+	"go-easy-note/pkg/constants"
 	"go-easy-note/pkg/errno"
 	"go-easy-note/pkg/middleware"
 	"time"
@@ -17,13 +17,13 @@ import (
 var UserClient userservice.Client
 
 func initUserRPC() {
-	r, err := etcd.NewEtcdResolver([]string{constant.EtcdAddress})
+	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
 
 	cli, err := userservice.NewClient(
-		constant.UserServiceName,
+		constants.UserServiceName,
 		client.WithMiddleware(middleware.CommonMiddleWare),
 		client.WithMiddleware(middleware.ClientMiddleWare),
 		client.WithMuxConnection(1),                       // mux

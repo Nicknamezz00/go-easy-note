@@ -8,7 +8,7 @@ import (
 	trace "github.com/kitex-contrib/tracer-opentracing"
 	"go-easy-note/kitex_gen/note"
 	"go-easy-note/kitex_gen/note/noteservice"
-	"go-easy-note/pkg/constant"
+	"go-easy-note/pkg/constants"
 	"go-easy-note/pkg/errno"
 	"go-easy-note/pkg/middleware"
 	"time"
@@ -17,13 +17,13 @@ import (
 var NoteClient noteservice.Client
 
 func initNoteRPC() {
-	r, err := etcd.NewEtcdResolver([]string{constant.EtcdAddress})
+	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
 
 	cli, err := noteservice.NewClient(
-		constant.NoteServiceName,
+		constants.NoteServiceName,
 		client.WithMiddleware(middleware.CommonMiddleWare),
 		client.WithMiddleware(middleware.ClientMiddleWare),
 		client.WithMuxConnection(1),                       // mux

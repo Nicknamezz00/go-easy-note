@@ -6,7 +6,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/remote"
 	"github.com/shirou/gopsutil/cpu"
-	"go-easy-note/pkg/constant"
+	"go-easy-note/pkg/constants"
 	"go-easy-note/pkg/errno"
 	"net"
 )
@@ -35,7 +35,7 @@ func (c *cpuLimitHandler) OnRead(ctx context.Context, conn net.Conn) (context.Co
 	percent := cpuPercent()
 	klog.CtxInfof(ctx, "current cpu is %.2g", percent)
 
-	if percent > constant.CPURateLimit {
+	if percent > constants.CPURateLimit {
 		return ctx, errno.ServiceErr.WithMessage(fmt.Sprintf("cpu = %.2g", c))
 	}
 	return ctx, nil
