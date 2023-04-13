@@ -49,7 +49,7 @@ message CheckUserResponse {
 }
 
 service UserService {
-  rpc CreateUser (CreateUserRequest) returns (CheckUserResponse) {}
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
   rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {}
   rpc CheckUser (CheckUserRequest) returns (CheckUserResponse) {}
 }

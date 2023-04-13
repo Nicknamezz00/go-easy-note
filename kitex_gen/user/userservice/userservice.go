@@ -132,14 +132,14 @@ func (p *CreateUserArgs) GetFirstArgument() interface{} {
 }
 
 type CreateUserResult struct {
-	Success *user.CheckUserResponse
+	Success *user.CreateUserResponse
 }
 
-var CreateUserResult_Success_DEFAULT *user.CheckUserResponse
+var CreateUserResult_Success_DEFAULT *user.CreateUserResponse
 
 func (p *CreateUserResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
 	if !p.IsSetSuccess() {
-		p.Success = new(user.CheckUserResponse)
+		p.Success = new(user.CreateUserResponse)
 	}
 	return p.Success.FastRead(buf, _type, number)
 }
@@ -166,7 +166,7 @@ func (p *CreateUserResult) Marshal(out []byte) ([]byte, error) {
 }
 
 func (p *CreateUserResult) Unmarshal(in []byte) error {
-	msg := new(user.CheckUserResponse)
+	msg := new(user.CreateUserResponse)
 	if err := proto.Unmarshal(in, msg); err != nil {
 		return err
 	}
@@ -174,7 +174,7 @@ func (p *CreateUserResult) Unmarshal(in []byte) error {
 	return nil
 }
 
-func (p *CreateUserResult) GetSuccess() *user.CheckUserResponse {
+func (p *CreateUserResult) GetSuccess() *user.CreateUserResponse {
 	if !p.IsSetSuccess() {
 		return CreateUserResult_Success_DEFAULT
 	}
@@ -182,7 +182,7 @@ func (p *CreateUserResult) GetSuccess() *user.CheckUserResponse {
 }
 
 func (p *CreateUserResult) SetSuccess(x interface{}) {
-	p.Success = x.(*user.CheckUserResponse)
+	p.Success = x.(*user.CreateUserResponse)
 }
 
 func (p *CreateUserResult) IsSetSuccess() bool {
@@ -509,7 +509,7 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) CreateUser(ctx context.Context, Req *user.CreateUserRequest) (r *user.CheckUserResponse, err error) {
+func (p *kClient) CreateUser(ctx context.Context, Req *user.CreateUserRequest) (r *user.CreateUserResponse, err error) {
 	var _args CreateUserArgs
 	_args.Req = Req
 	var _result CreateUserResult
