@@ -25,7 +25,7 @@ func initNoteRPC() {
 	cli, err := noteservice.NewClient(
 		constants.NoteServiceName,
 		client.WithMiddleware(middleware.CommonMiddleWare),
-		client.WithMiddleware(middleware.ClientMiddleWare),
+		client.WithInstanceMW(middleware.ClientMiddleWare),
 		client.WithMuxConnection(1),                       // mux
 		client.WithRPCTimeout(3*time.Second),              // rpc timeout
 		client.WithConnectTimeout(50*time.Millisecond),    // connection timeout

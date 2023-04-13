@@ -14,14 +14,13 @@ import (
 	"time"
 )
 
-var UserClient userservice.Client
+var userClient userservice.Client
 
 func initUserRPC() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
 	if err != nil {
 		panic(err)
 	}
-
 	cli, err := userservice.NewClient(
 		constants.UserServiceName,
 		client.WithMiddleware(middleware.CommonMiddleWare),
@@ -36,27 +35,20 @@ func initUserRPC() {
 	if err != nil {
 		panic(err)
 	}
-	UserClient = cli
+	userClient = cli
 }
 
-func CreateUser(ctx context.Context, req *user.CreateUserRequest) error {
-	resp, err := UserClient.CreateUser(ctx, req)
+func GetUsers(ctx context.Context, req *user.GetUsersRequest) (map[int64]*user.User, error) {
+	resp, err := userClient.GetUsers(ctx, req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if resp.BaseResp.StatusCode != 0 {
-		return errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.Message)
+		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.Message)
 	}
-	return nil
-}
-
-func CheckUser(ctx context.Context, req *user.CheckUserRequest) (int64, error) {
-	resp, err := UserClient.CheckUser(ctx, req)
-	if err != nil {
-		return 0, err
+	ret := make(map[int64]*user.User)
+	for _, u := range resp.Users {
+		ret[u.UserId] = u
 	}
-	if resp.BaseResp.StatusCode != 0 {
-		return 0, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.Message)
-	}
-	return resp.UserId, nil
+	return ret, nil
 }

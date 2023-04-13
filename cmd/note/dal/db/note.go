@@ -18,7 +18,7 @@ func (n *Note) TableName() string {
 }
 
 // CreateNote create note
-func CreateNote(ctx context.Context, notes *[]Note) error {
+func CreateNote(ctx context.Context, notes []*Note) error {
 	if err := DB.WithContext(ctx).Create(notes).Error; err != nil {
 		return err
 	}

@@ -1,4 +1,4 @@
-package perf_bound
+package bound
 
 import (
 	"context"
