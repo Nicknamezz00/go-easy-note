@@ -1,9 +1,12 @@
-package api
+package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/hertz-contrib/jwt"
 	"go-easy-note/cmd/api/handlers"
@@ -16,7 +19,7 @@ import (
 )
 
 func Init() {
-	tracer.InitJaeger(constant.ApiServiceName)
+	tracer.InitJaeger(constants.ApiServiceName)
 	rpc.InitRPC()
 }
 
@@ -29,12 +32,12 @@ func main() {
 	)
 
 	authMiddleware, _ := jwt.New(&jwt.HertzJWTMiddleware{
-		Key:        []byte(constant.SecretKey),
+		Key:        []byte(constants.SecretKey),
 		Timeout:    time.Hour,
 		MaxRefresh: time.Hour,
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if val, ok := data.(int64); ok {
-				return jwt.MapClaims{constant.IdentityKey: val}
+				return jwt.MapClaims{constants.IdentityKey: val}
 			}
 			return jwt.MapClaims{}
 		},
@@ -78,10 +81,19 @@ func main() {
 		TimeFunc:      time.Now,
 	})
 
+	r.Use(recovery.Recovery(recovery.WithRecoveryHandler(
+		func(ctx context.Context, c *app.RequestContext, err interface{}, stack []byte) {
+			hlog.SystemLogger().CtxErrorf(ctx, "[Recovery] err=%v\nstack=%s", err, stack)
+			c.JSON(consts.StatusInternalServerError, map[string]interface{}{
+				"code":    errno.ServiceErrCode,
+				"message": fmt.Sprintf("[Recovery] err=%v\nstack=%s", err, stack),
+			})
+		})))
+
 	v1 := r.Group("/v1")
 	user1 := v1.Group("/user")
 	user1.POST("/login", authMiddleware.LoginHandler)
-	user1.POST("register", handlers.Register)
+	user1.POST("/register", handlers.Register)
 
 	note1 := v1.Group("/note")
 	note1.Use(authMiddleware.MiddlewareFunc())

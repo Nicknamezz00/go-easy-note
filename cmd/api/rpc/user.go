@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-var UserClient userservice.Client
+var userClient userservice.Client
 
 func initUserRPC() {
 	r, err := etcd.NewEtcdResolver([]string{constants.EtcdAddress})
@@ -36,11 +36,11 @@ func initUserRPC() {
 	if err != nil {
 		panic(err)
 	}
-	UserClient = cli
+	userClient = cli
 }
 
 func CreateUser(ctx context.Context, req *user.CreateUserRequest) error {
-	resp, err := UserClient.CreateUser(ctx, req)
+	resp, err := userClient.CreateUser(ctx, req)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func CreateUser(ctx context.Context, req *user.CreateUserRequest) error {
 }
 
 func CheckUser(ctx context.Context, req *user.CheckUserRequest) (int64, error) {
-	resp, err := UserClient.CheckUser(ctx, req)
+	resp, err := userClient.CheckUser(ctx, req)
 	if err != nil {
 		return 0, err
 	}

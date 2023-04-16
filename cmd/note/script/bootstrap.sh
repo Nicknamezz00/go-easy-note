@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#! /usr/bin/env bash
 
 CURDIR=$(cd $(dirname $0); pwd)
 
@@ -28,4 +28,4 @@ export JAEGER_REPORTER_LOG_SPANS=true
 export JAEGER_AGENT_HOST="127.0.0.1"
 export JAEGER_AGENT_PORT=6831
 
-exec "$CURDIR/bin/note"
+exec "$CURDIR/bin/demonote"

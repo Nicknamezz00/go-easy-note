@@ -13,7 +13,7 @@ type Response struct {
 }
 
 type UserParam struct {
-	UserName string `json:"user-name"`
+	UserName string `json:"username"`
 	Password string `json:"password"`
 }
 

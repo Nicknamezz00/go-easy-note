@@ -6,7 +6,7 @@ services:
     volumes:
       - ./pkg/config/sql:/docker-entrypoint-initdb.d
     ports:
-      - 9901:3306
+      - "9901:3306"
     environment:
       - MYSQL_DATABASE=gorm
       - MYSQL_USER=wrz
@@ -15,7 +15,7 @@ services:
   Etcd:
     image: "quay.io/coreos/etcd:v3.5.5"
     ports:
-      - 2379:2379
+      - "2379:2379"
     environment:
       - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
       - ETCD_ADVERTISE_CLIENT_URLS=http://0.0.0.0:2379
